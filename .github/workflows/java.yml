@@ -1,6 +1,7 @@
 name: Java CI
 
-on: [pull_request]
+on: [pull_request,workflow_dispatch]
+ 
 
 jobs:
   build:
@@ -17,4 +18,4 @@ jobs:
         working-directory: ./JHotDraw
         run: mvn --batch-mode --update-snapshots verify
       - name: Test with Maven
-        run: env -B test -F ./JHotDraw/pom.xml
+        run: mvn -B test -f ./JHotDraw/pom.xml
