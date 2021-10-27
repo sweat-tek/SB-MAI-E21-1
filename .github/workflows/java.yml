@@ -16,3 +16,5 @@ jobs:
       - name: Build with Maven
         working-directory: ./JHotDraw
         run: mvn --batch-mode --update-snapshots verify
+      - name: Test with Maven
+        run: env -B test -F ./JHotDraw/pom.xml
