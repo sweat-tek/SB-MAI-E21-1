@@ -62,6 +62,11 @@ public class Bounds2DCreator {
 
     private void handleFirstNode() {
         BezierPath.Node node = nodes.get(0);
+        x1 = node.x[0];
+        x2 = node.x[0];
+        y1 = node.y[0];
+        y2 = node.y[0];
+
         if (isClosed && (node.mask & BezierPath.C1_MASK) != 0) {
             findLargest(node, 1);
         }
