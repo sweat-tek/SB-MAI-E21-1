@@ -66,7 +66,8 @@ public class SVGRectRadiusHandle extends AbstractHandle {
     }
     
     private Point locate() {
-        SVGRectFigure owner = (SVGRectFigure) getOwner();
+        SVGRectFigure owner = getRectOwner();
+        //SVGRectFigure owner = (SVGRectFigure) getOwner();
         Rectangle2D.Double r = owner.getBounds();
         Point2D.Double p = new Point2D.Double(
                 r.x + owner.getArcWidth(), 
@@ -79,14 +80,16 @@ public class SVGRectRadiusHandle extends AbstractHandle {
     }
     
     public void trackStart(Point anchor, int modifiersEx) {
-        SVGRectFigure svgRect = (SVGRectFigure) getOwner();
+        SVGRectFigure svgRect = getRectOwner();
+        //SVGRectFigure svgRect = (SVGRectFigure) getOwner();
         originalArc2D = svgRect.getArc();
     }
     
     public void trackStep(Point anchor, Point lead, int modifiersEx) {
         int dx = lead.x - anchor.x;
         int dy = lead.y - anchor.y;
-        SVGRectFigure svgRect = (SVGRectFigure) getOwner();
+        SVGRectFigure svgRect = getRectOwner();
+        //SVGRectFigure svgRect = (SVGRectFigure) getOwner();
         svgRect.willChange();
         Point2D.Double p = view.viewToDrawing(lead);
         if (TRANSFORM.get(svgRect) != null) {
@@ -101,14 +104,22 @@ public class SVGRectRadiusHandle extends AbstractHandle {
         svgRect.changed();
     }
     public void trackEnd(Point anchor, Point lead, int modifiersEx) {
-        final SVGRectFigure svgRect = (SVGRectFigure) getOwner();
+        SVGRectFigure svgRect = getRectOwner();
+        //final SVGRectFigure svgRect = (SVGRectFigure) getOwner();
         final Dimension2DDouble oldValue = originalArc2D;
         final Dimension2DDouble newValue = svgRect.getArc();
         fireUndoableEditHappened(new SVGRectRadiusUndoableEdit(svgRect, oldValue, newValue));
    }
+    
+    public SVGRectFigure getRectOwner(){
+    
+        SVGRectFigure owner = (SVGRectFigure) getOwner();
+        return owner;
+    }
     @Override
     public void keyPressed(KeyEvent evt) {
-        SVGRectFigure owner = (SVGRectFigure) getOwner();
+        SVGRectFigure owner = getRectOwner();
+        //SVGRectFigure owner = (SVGRectFigure) getOwner();
         Dimension2DDouble oldArc = new Dimension2DDouble(owner.getArcWidth(), owner.getArcHeight());
         Dimension2DDouble newArc = new Dimension2DDouble(owner.getArcWidth(), owner.getArcHeight());
         switch (evt.getKeyCode()) {
