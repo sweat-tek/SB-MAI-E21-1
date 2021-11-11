@@ -43,7 +43,7 @@ public class Bounds2DCreator {
         y2 = 0.0f;
     }
 
-    private void findLargest(BezierPath.Node node, int index) {
+    private void getNext(BezierPath.Node node, int index) {
         double x = node.x[index];
         double y = node.y[index];
         if (x < x1) {
@@ -68,33 +68,33 @@ public class Bounds2DCreator {
         y2 = node.y[0];
 
         if (isClosed && (node.mask & BezierPath.C1_MASK) != 0) {
-            findLargest(node, 1);
+            getNext(node, 1);
         }
         if ((node.mask & BezierPath.C2_MASK) != 0) {
-            findLargest(node, 2);
+            getNext(node, 2);
         }
     }
 
     private void handleLastNode() {
         int last = size - 1;
         BezierPath.Node node = nodes.get(last);
-        findLargest(node, 0);
+        getNext(node, 0);
         if ((node.mask & BezierPath.C1_MASK) != 0) {
-            findLargest(node, 1);
+            getNext(node, 1);
         }
         if (isClosed && (node.mask & BezierPath.C2_MASK) != 0) {
-            findLargest(node, 2);
+            getNext(node, 2);
         }
     }
 
     private void handleNode(int index) {
         BezierPath.Node node = nodes.get(index);
-        findLargest(node, 0);
+        getNext(node, 0);
         if ((node.mask & BezierPath.C1_MASK) != 0) {
-            findLargest(node, 1);
+            getNext(node, 1);
         }
         if ((node.mask & BezierPath.C2_MASK) != 0) {
-            findLargest(node, 2);
+            getNext(node, 2);
         }
     }
 }
