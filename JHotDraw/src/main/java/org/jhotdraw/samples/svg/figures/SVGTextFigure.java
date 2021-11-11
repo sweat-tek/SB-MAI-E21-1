@@ -192,35 +192,23 @@ public class SVGTextFigure
      *
      * @param tx the transformation.
      */
+    @Override
     public void transform(AffineTransform tx) {
+        SVGTextHelper svgTextHelper = new SVGTextHelper(this, tx);
         if (TRANSFORM.get(this) != null ||
                 tx.getType() != (tx.getType() & AffineTransform.TYPE_TRANSLATION)) {
-            if (TRANSFORM.get(this) == null) {
-                TRANSFORM.basicSet(this, (AffineTransform) tx.clone());
-            } else {
-                AffineTransform t = TRANSFORM.getClone(this);
-                t.preConcatenate(tx);
-                TRANSFORM.basicSet(this, t);
-            }
+            
+            svgTextHelper.transform();
         } else {
-            for (int i=0; i < coordinates.length; i++) {
+            for (int i = 0; i < coordinates.length; i++) {
                 tx.transform(coordinates[i], coordinates[i]);
             }
-            if (FILL_GRADIENT.get(this) != null &&
-                    ! FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null && 
-                    ! STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
+            svgTextHelper.fillGradient();
+            svgTextHelper.strokeGradient();
         }
         invalidate();
     }
+    
     public void restoreTransformTo(Object geometry) {
         Object[] restoreData = (Object[]) geometry;
         TRANSFORM.basicSetClone(this, (AffineTransform) restoreData[0]);
@@ -343,6 +331,7 @@ public class SVGTextFigure
         cachedBounds = null;
         cachedDrawingArea = null;
     }
+    
     public Dimension2DDouble getPreferredSize() {
         Rectangle2D.Double b = getBounds();
         return new Dimension2DDouble(b.width, b.height);
