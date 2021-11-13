@@ -334,51 +334,20 @@ public class BezierFigure extends AbstractAttributedFigure {
      * it from drawing under the end caps.
      */
     protected BezierPath getCappedPath() {
-        if (cappedPath == null) {
-            cappedPath = (BezierPath) path.clone();
-            if (isClosed()) {
-                cappedPath.setClosed(true);
-            } else {
-                if (cappedPath.size() > 1) {
-                    if (START_DECORATION.get(this) != null) {
-                        BezierPath.Node p0 = cappedPath.get(0);
-                        BezierPath.Node p1 = cappedPath.get(1);
-                        Point2D.Double pp;
-                        if ((p0.getMask() & BezierPath.C2_MASK) != 0) {
-                            pp = p0.getControlPoint(2);
-                        } else if ((p1.getMask() & BezierPath.C1_MASK) != 0) {
-                            pp = p1.getControlPoint(1);
-                        } else {
-                            pp = p1.getControlPoint(0);
-                        }
-                        double radius = START_DECORATION.get(this).getDecorationRadius(this);
-                        double lineLength = Geom.length(p0.getControlPoint(0), pp);
-                        cappedPath.set(0,0, Geom.cap(pp, p0.getControlPoint(0), - Math.min(radius, lineLength)));
-                    }
-                    if (END_DECORATION.get(this) != null) {
-                        BezierPath.Node p0 = cappedPath.get(cappedPath.size() - 1);
-                        BezierPath.Node p1 = cappedPath.get(cappedPath.size() - 2);
-                        
-                        Point2D.Double pp;
-                        if ((p0.getMask() & BezierPath.C1_MASK) != 0) {
-                            pp = p0.getControlPoint(1);
-                        } else if ((p1.getMask() & BezierPath.C2_MASK) != 0) {
-                            pp = p1.getControlPoint(2);
-                        } else {
-                            pp = p1.getControlPoint(0);
-                        }
-                        
-                        
-                        double radius = END_DECORATION.get(this).getDecorationRadius(this);
-                        double lineLength = Geom.length(p0.getControlPoint(0), pp);
-                        cappedPath.set(cappedPath.size() - 1, 0, Geom.cap(pp, p0.getControlPoint(0), -Math.min(radius, lineLength)));
-                    }
-                    cappedPath.invalidatePath();
-                }
-            }
+        if (cappedPath != null) {
+            return cappedPath;
         }
+
+        cappedPath = path.clone();
+        if (isClosed()) {
+            cappedPath.setClosed(true);
+        } else {
+            createCappedPath();
+        }
+
         return cappedPath;
     }
+
     public void layout() {
     }
     
@@ -706,5 +675,40 @@ public class BezierFigure extends AbstractAttributedFigure {
             in.closeElement();
         }
         in.closeElement();
+    }
+
+    private void createCappedPath() {
+        if (cappedPath.size() <= 1) {
+            return;
+        }
+
+        if (START_DECORATION.get(this) != null) {
+            setCappedPath(START_DECORATION, 0, 1, 2, 1);
+        }
+        if (END_DECORATION.get(this) != null) {
+            int size = cappedPath.size();
+            setCappedPath(END_DECORATION, size - 1, size - 2, 1,2);
+        }
+
+        cappedPath.invalidatePath();
+    }
+
+    private void setCappedPath(AttributeKey<LineDecoration> attributeKey, int node1, int node2, int index1, int index2) {
+        BezierPath.Node p0 = cappedPath.get(node1);
+        BezierPath.Node p1 = cappedPath.get(node2);
+        Point2D.Double pp;
+
+        if ((p0.getMask() & BezierPath.C2_MASK) != 0) {
+            pp = p0.getControlPoint(index1);
+        } else if ((p1.getMask() & BezierPath.C1_MASK) != 0) {
+            pp = p1.getControlPoint(index2);
+        } else {
+            pp = p1.getControlPoint(0);
+        }
+
+        double radius = attributeKey.get(this).getDecorationRadius(this);
+        double lineLength = Geom.length(p0.getControlPoint(0), pp);
+
+        cappedPath.set(node1,0, Geom.cap(pp, p0.getControlPoint(0), - Math.min(radius, lineLength)));
     }
 }
