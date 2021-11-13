@@ -91,7 +91,14 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
             // We have to generate the path for the round rectangle manually,
             // because the path of a Java RoundRectangle is drawn counter clockwise
             // whereas an SVG rect needs to be drawn clockwise.
-            GeneralPath p = new GeneralPath();
+            
+            generatePath(g);
+        }
+    }
+    
+    protected void generatePath(Graphics2D g) {
+    
+    GeneralPath p = new GeneralPath();
             double aw = roundrect.arcwidth / 2d;
             double ah = roundrect.archeight / 2d;
             p.moveTo((float) (roundrect.x + aw), (float) roundrect.y);
@@ -114,8 +121,9 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
                     (float)(roundrect.x + aw), (float)(roundrect.y));
             p.closePath();
             g.draw(p);
-        }
     }
+    
+    
 
     // SHAPE AND BOUNDS
     public double getX() {
