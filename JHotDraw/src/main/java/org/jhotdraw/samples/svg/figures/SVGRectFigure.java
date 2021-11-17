@@ -197,7 +197,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
         cachedTransformedShape = null;
         cachedHitShape = null;
     }
-
+    
     private Shape getTransformedShape() {
         if (cachedTransformedShape == null) {
             if (getArcHeight() == 0 || getArcWidth() == 0) {
