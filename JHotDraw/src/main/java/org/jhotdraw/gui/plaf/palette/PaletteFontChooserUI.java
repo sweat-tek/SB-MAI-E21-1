@@ -274,64 +274,22 @@ public class PaletteFontChooserUI extends FontChooserUI {
         isUpdating--;
     }
 
+    // Called when a new font collection is chosen, gets new font values and sets it in selection path
     private void doCollectionChanged() {
+        // Get collection list for font options
         JList list = selectionPanel.getCollectionList();
 
-        TreePath path = fontChooser.getSelectionPath();
-        FontCollectionNode oldCollection = (path != null && path.getPathCount() > 1) ? (FontCollectionNode) path.getPathComponent(1) : null;
-        FontFamilyNode oldFamily = (path != null && path.getPathCount() > 2) ? (FontFamilyNode) path.getPathComponent(2) : null;
-        FontFaceNode oldFace = (path != null && path.getPathCount() > 3) ? (FontFaceNode) path.getPathComponent(3) : null;
+        // Get the chosen font collection
+        FontCollectionNode collection = (FontCollectionNode) list.getSelectedValue();
 
-        FontCollectionNode newCollection = (FontCollectionNode) list.getSelectedValue();
-        FontFamilyNode newFamily = null;
-        FontFaceNode newFace = null;
+        // Get chosen font family
+        FontFamilyNode family = collection.getChildAt(0);
 
-        if ((oldFamily == null || oldFace == null) && fontChooser.getSelectedFont() != null) {
-            oldFace = new FontFaceNode(fontChooser.getSelectedFont());
-            oldFamily = new FontFamilyNode(fontChooser.getSelectedFont().getFamily());
-        }
+        // Get chosen font face
+        FontFaceNode face = family.getChildAt(0);
 
-        if (newCollection != null && oldFamily != null) {
-            for (int i = 0,  n = newCollection.getChildCount(); i < n; i++) {
-                FontFamilyNode aFamily = newCollection.getChildAt(i);
-                if (aFamily.compareTo(oldFamily) == 0) {
-                    newFamily = aFamily;
-                    break;
-                }
-            }
-        }
-        if (newFamily != null && oldFace != null) {
-            // search in the new family for the face
-            for (FontFaceNode aFace : newFamily.faces()) {
-                if (aFace.compareTo(oldFace) == 0) {
-                    newFace = aFace;
-                    break;
-                }
-            }
-        } else if (newFace == null && oldFamily != null && oldFace != null) {
-            OuterLoop:
-            for (FontFamilyNode aFamily : newCollection.families()) {
-                for (FontFaceNode aFace : aFamily.faces()) {
-                    if (aFace.compareTo(oldFace) == 0) {
-                        newFace = aFace;
-                        newFamily = (FontFamilyNode) aFace.getParent();
-                        break OuterLoop;
-                    }
-                }
-            }
-        }
-        if (newCollection != null) {
-            if (newFamily == null && newCollection.getChildCount() > 0) {
-                newFamily = newCollection.getChildAt(0);
-            }
-            if (newFamily != null) {
-                if (newFace == null && newFamily.getChildCount() > 0) {
-                    newFace = newFamily.getChildAt(0);
-                }
-            }
-        }
-
-        setNewSelectionPath(newCollection, newFamily, newFace);
+        // Set new font customization values
+        setNewSelectionPath(collection, family, face);
     }
 
     private void doFamilyChanged() {
