@@ -91,7 +91,6 @@ public class FillToolBar extends AbstractToolBar {
         
         p.setLayout(new GridBagLayout());
 
-        
         return p;
     }
     
