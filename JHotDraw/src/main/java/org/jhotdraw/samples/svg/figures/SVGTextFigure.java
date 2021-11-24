@@ -72,6 +72,7 @@ public class SVGTextFigure
     // DRAWING
     protected void drawText(java.awt.Graphics2D g) {
     }
+    
     protected void drawFill(Graphics2D g) {
         g.fill(getTextShape());
     }
@@ -99,6 +100,7 @@ public class SVGTextFigure
         this.rotates = rotates;
         invalidate();
     }
+    
     public double[] getRotates() {
         return (double[]) rotates.clone();
     }
@@ -110,7 +112,9 @@ public class SVGTextFigure
         }
         return (Rectangle2D.Double) cachedBounds.clone();
     }
-    @Override public Rectangle2D.Double getDrawingArea() {
+    
+    @Override 
+    public Rectangle2D.Double getDrawingArea() {
         if (cachedDrawingArea == null) {
             Rectangle2D rx = getBounds();
             Rectangle2D.Double r = (rx instanceof Rectangle2D.Double) ?
@@ -127,6 +131,7 @@ public class SVGTextFigure
         }
         return (Rectangle2D.Double) cachedDrawingArea.clone();
     }
+    
     /**
      * Checks if a Point2D.Double is inside the figure.
      */
@@ -187,6 +192,7 @@ public class SVGTextFigure
         };
         rotates = new double[] { 0d };
     }
+    
     /**
      * Transforms the figure.
      *
@@ -241,6 +247,7 @@ public class SVGTextFigure
     public String getText() {
         return (String) getAttribute(TEXT);
     }
+    
     @Override
     public <T> void setAttribute(AttributeKey<T> key, T newValue) {
         if (key .equals( SVGAttributeKeys.TRANSFORM )||
@@ -259,9 +266,11 @@ public class SVGTextFigure
     public void setText(String newText) {
         TEXT.set(this, newText);
     }
+    
     public boolean isEditable() {
         return editable;
     }
+    
     public void setEditable(boolean b) {
         this.editable = b;
     }
@@ -363,10 +372,12 @@ public class SVGTextFigure
     public boolean canConnect() {
         return false; // SVG does not support connecting
     }
+    
     @Override
     public Connector findConnector(Point2D.Double p, ConnectionFigure prototype) {
         return null; // SVG does not support connectors
     }
+    
     @Override
     public Connector findCompatibleConnector(Connector c, boolean isStartConnector) {
         return null; // SVG does not support connectors

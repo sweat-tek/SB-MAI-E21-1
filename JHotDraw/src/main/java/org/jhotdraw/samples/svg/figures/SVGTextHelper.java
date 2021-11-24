@@ -26,8 +26,8 @@ public class SVGTextHelper {
         this.figure = figure;
         this.tx = tx;
     }
-
-    protected void transform() {
+    
+    public void transform() {
         if (TRANSFORM.get(figure) == null) {
             TRANSFORM.basicSet(figure, (AffineTransform) tx.clone());
         } else {
