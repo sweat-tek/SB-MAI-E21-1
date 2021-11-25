@@ -119,10 +119,15 @@ public class JDisclosureToolBar extends JToolBar {
 
         invalidate();
         Container parent = getParent();
-        while (parent.getParent() != null && !parent.getParent().isValid()) {
+        
+        while (parent != null && parent.getParent() != null && !parent.getParent().isValid()) {
             parent = parent.getParent();
         }
-        parent.validate();
+        
+        if (parent != null) {
+            parent.validate();
+        }
+        
         repaint();
 
         firePropertyChange(DISCLOSURE_STATE_PROPERTY, oldValue, newValue);
