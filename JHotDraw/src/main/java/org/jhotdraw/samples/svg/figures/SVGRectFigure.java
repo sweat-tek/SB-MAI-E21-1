@@ -286,6 +286,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
             default:
                 break;
         }
+        assert (!handles.isEmpty());
         return handles;
     }
     // CONNECTING

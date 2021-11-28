@@ -97,7 +97,7 @@ public class SVGRectFigureTest {
     }
 
     /**
-     * Test of isEmpty method, of class SVGRectFigure.
+     * Test of isEmpty method,l of class SVGRectFigure.
      * Setting width or height to 0 should make isEmpty() return true
      */
     @Test
