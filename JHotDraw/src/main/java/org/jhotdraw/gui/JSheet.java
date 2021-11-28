@@ -16,7 +16,6 @@ package org.jhotdraw.gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.peer.*;
 import java.beans.*;
 import java.lang.reflect.*;
 import javax.swing.*;
