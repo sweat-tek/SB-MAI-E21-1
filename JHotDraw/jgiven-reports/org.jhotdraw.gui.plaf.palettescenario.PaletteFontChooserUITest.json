@@ -1,0 +1,71 @@
+{
+  "className": "org.jhotdraw.gui.plaf.palettescenario.PaletteFontChooserUITest",
+  "name": "Palette Font Chooser UI",
+  "scenarios": [
+    {
+      "className": "org.jhotdraw.gui.plaf.palettescenario.PaletteFontChooserUITest",
+      "testMethodName": "calltestsomething",
+      "description": "Calltestsomething",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "font selection unit created",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "font selection unit created"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 133869200
+            },
+            {
+              "name": "the user confirms font selection",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "the user confirms font selection"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 4414100
+            },
+            {
+              "name": "font has been chosen",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "font has been chosen"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 314200
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "durationInNanos": 155016100
+        }
+      ],
+      "durationInNanos": 155016100,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {}
+}
