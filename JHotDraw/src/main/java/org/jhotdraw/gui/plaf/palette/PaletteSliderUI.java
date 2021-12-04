@@ -16,6 +16,8 @@ package org.jhotdraw.gui.plaf.palette;
 
 import org.apache.batik.ext.awt.LinearGradientPaint;
 import org.apache.batik.ext.awt.MultipleGradientPaint;
+import org.jhotdraw.geom.Dimensions2D;
+
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
@@ -26,26 +28,31 @@ import javax.swing.plaf.basic.*;
  * PaletteSliderUI.
  *
  * @author Werner Randelshofer
- * @version 1.0 Apr 13, 2008 Created.
+ *          @version 1.0 Apr 13, 2008 Created.
  */
 public class PaletteSliderUI extends BasicSliderUI {
-    private final static float[] enabledStops = new float[]{0f, 0.35f, 0.35f, 1f};
-    private final static Color[] enabledStopColors = new Color[]{new Color(0xf3f3f3), new Color(0xcccccc), new Color(0xbababa), new Color(0xf3f3f3)};
-    private final static float[] disabledStops = new float[]{0f, 0.35f, 0.35f, 1f};
-    private final static Color[] disabledStopColors = new Color[]{new Color(0xf3f3f3), new Color(0xeeeeee), new Color(0xcacaca), new Color(0xf3f3f3)};
-    private final static float[] selectedStops = new float[]{0f, 0.2f, 1f};
-    private final static Color[] selectedStopColors = new Color[]{new Color(0x999999), new Color(0xaaaaaa), new Color(0x666666)};
-    
-    public static ComponentUI createUI(JComponent b)    {
-        return new PaletteSliderUI((JSlider)b);
+    private final static float[] enabledStops = new float[] { 0f, 0.35f, 0.35f, 1f };
+    private final static Color[] enabledStopColors = new Color[] { new Color(0xf3f3f3), new Color(0xcccccc),
+            new Color(0xbababa), new Color(0xf3f3f3) };
+    private final static float[] disabledStops = new float[] { 0f, 0.35f, 0.35f, 1f };
+    private final static Color[] disabledStopColors = new Color[] { new Color(0xf3f3f3), new Color(0xeeeeee),
+            new Color(0xcacaca), new Color(0xf3f3f3) };
+    private final static float[] selectedStops = new float[] { 0f, 0.2f, 1f };
+    private final static Color[] selectedStopColors = new Color[] { new Color(0x999999), new Color(0xaaaaaa),
+            new Color(0x666666) };
+
+    public static ComponentUI createUI(JComponent b) {
+        return new PaletteSliderUI((JSlider) b);
     }
-    public PaletteSliderUI(JSlider slider)   {
+
+    public PaletteSliderUI(JSlider slider) {
         super(slider);
     }
+
     @Override
-    protected void installDefaults( JSlider slider ) {
+    protected void installDefaults(JSlider slider) {
         super.installDefaults(slider);
-        
+
         PaletteLookAndFeel laf = PaletteLookAndFeel.getInstance();
         PaletteLookAndFeel.installBorder(slider, "Slider.border");
         PaletteLookAndFeel.installColors(slider, "Slider.background", "Slider.foreground");
@@ -53,7 +60,7 @@ public class PaletteSliderUI extends BasicSliderUI {
 
     @Override
     public Dimension getPreferredHorizontalSize() {
-        Dimension horizDim = (Dimension)PaletteLookAndFeel.getInstance().get("Slider.horizontalSize");
+        Dimension horizDim = (Dimension) PaletteLookAndFeel.getInstance().get("Slider.horizontalSize");
         if (horizDim == null) {
             horizDim = new Dimension(100, 21);
         }
@@ -62,36 +69,36 @@ public class PaletteSliderUI extends BasicSliderUI {
 
     @Override
     public Dimension getPreferredVerticalSize() {
-        Dimension vertDim = (Dimension)PaletteLookAndFeel.getInstance().get("Slider.verticalSize");
+        Dimension vertDim = (Dimension) PaletteLookAndFeel.getInstance().get("Slider.verticalSize");
         if (vertDim == null) {
             vertDim = new Dimension(21, 100);
         }
         return vertDim;
     }
-    
+
     @Override
-     public void paint( Graphics gr, JComponent c )   {
-         Graphics2D g = (Graphics2D) gr;
-         
+    public void paint(Graphics gr, JComponent c) {
+        Graphics2D g = (Graphics2D) gr;
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-         super.paint(g, c);
-     }
-   
+        super.paint(g, c);
+    }
+
     @Override
-    public void paintFocus(Graphics g)  {        
+    public void paintFocus(Graphics g) {
         // empty
     }
 
     @Override
-    public void paintTrack(Graphics g)  {        
+    public void paintTrack(Graphics g) {
         int cx, cy, cw, ch;
         int pad;
 
         Rectangle trackBounds = trackRect;
 
-        if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
             pad = trackBuffer;
             cx = pad;
             cy = (trackBounds.height / 2) - 2;
@@ -106,150 +113,167 @@ public class PaletteSliderUI extends BasicSliderUI {
             g.drawLine(0, 3, cw, 3);
             g.drawLine(cw, 0, cw, 3);
             g.setColor(Color.black);
-            g.drawLine(1, 1, cw-2, 1);
+            g.drawLine(1, 1, cw - 2, 1);
 
             g.translate(-trackBounds.x, -(trackBounds.y + cy));
-        }
-        else {
+        } else {
             pad = trackBuffer;
             cx = (trackBounds.width / 2) - 2;
             cy = pad;
             ch = trackBounds.height;
             g.setColor(new Color(slider.isEnabled() ? 0x888888 : 0xaaaaaa));
-            g.drawRoundRect( trackBounds.x + cx, trackBounds.y, 5, ch, 5, 5);
-            
-            
+            g.drawRoundRect(trackBounds.x + cx, trackBounds.y, 5, ch, 5, 5);
+
         }
     }
+
+    private void paintPlainThumbCircle(Graphics2D g, float[] stops, Color[] stopColors, Dimensions2D dim) {
+        LinearGradientPaint lgp = new LinearGradientPaint(
+                new Point2D.Float(2, 2), new Point2D.Float(2, 2 + dim.getHeight() - 4),
+                stops, stopColors,
+                MultipleGradientPaint.REPEAT,
+                MultipleGradientPaint.LINEAR_RGB);
+
+        g.setPaint(lgp);
+        g.fillOval(2, 2, dim.getWidth() - 4, dim.getHeight() - 4);
+        g.setColor(new Color(0x444444));
+        g.drawOval(1, 1, dim.getWidth() - 3, dim.getHeight() - 3);
+    }
+
+    private void paintThumbHorizontal(Graphics2D g, Dimensions2D dim, Polygon p) {
+        int w = dim.getWidth();
+        int h = dim.getHeight();
+        int cw = w / 2;
+
+        g.fillRect(1, 1, w - 3, h - 1 - cw);
+        p.addPoint(1, h - cw);
+        p.addPoint(cw - 1, h - 1);
+        p.addPoint(w - 2, h - 1 - cw);
+        g.fillPolygon(p);
+
+        g.setColor(getHighlightColor());
+        g.drawLine(0, 0, w - 2, 0);
+        g.drawLine(0, 1, 0, h - 1 - cw);
+        g.drawLine(0, h - cw, cw - 1, h - 1);
+
+        g.setColor(Color.black);
+        g.drawLine(w - 1, 0, w - 1, h - 2 - cw);
+        g.drawLine(w - 1, h - 1 - cw, w - 1 - cw, h - 1);
+
+        g.setColor(getShadowColor());
+        g.drawLine(w - 2, 1, w - 2, h - 2 - cw);
+        g.drawLine(w - 2, h - 1 - cw, w - 1 - cw, h - 2);
+    }
+
+    private void paintThumbVerticalLeftToRight(Graphics2D g, Dimensions2D dim, Polygon p) {
+        int w = dim.getWidth();
+        int h = dim.getHeight();
+        int cw = h / 2;
+
+        g.fillRect(1, 1, w - 1 - cw, h - 3);
+
+        p.addPoint(w - cw - 1, 0);
+        p.addPoint(w - 1, cw);
+        p.addPoint(w - 1 - cw, h - 2);
+        g.fillPolygon(p);
+
+        g.setColor(getHighlightColor());
+        g.drawLine(0, 0, 0, h - 2); // left
+        g.drawLine(1, 0, w - 1 - cw, 0); // top
+        g.drawLine(w - cw - 1, 0, w - 1, cw); // top slant
+
+        g.setColor(Color.black);
+        g.drawLine(0, h - 1, w - 2 - cw, h - 1); // bottom
+        g.drawLine(w - 1 - cw, h - 1, w - 1, h - 1 - cw); // bottom slant
+
+        g.setColor(getShadowColor());
+        g.drawLine(1, h - 2, w - 2 - cw, h - 2); // bottom
+        g.drawLine(w - 1 - cw, h - 2, w - 2, h - cw - 1); // bottom slant
+    }
+
+    private void paintThumbVerticalRightToLeft(Graphics2D g, Dimensions2D dim, Polygon p) {
+        int w = dim.getWidth();
+        int h = dim.getHeight();
+        int cw = h / 2;
+
+        g.fillRect(5, 1, w - 1 - cw, h - 3);
+        p.addPoint(cw, 0);
+        p.addPoint(0, cw);
+        p.addPoint(cw, h - 2);
+        g.fillPolygon(p);
+
+        g.setColor(getHighlightColor());
+        g.drawLine(cw - 1, 0, w - 2, 0); // top
+        g.drawLine(0, cw, cw, 0); // top slant
+
+        g.setColor(Color.black);
+        g.drawLine(0, h - 1 - cw, cw, h - 1); // bottom slant
+        g.drawLine(cw, h - 1, w - 1, h - 1); // bottom
+
+        g.setColor(getShadowColor());
+        g.drawLine(cw, h - 2, w - 2, h - 2); // bottom
+        g.drawLine(w - 1, 1, w - 1, h - 2); // right
+    }
+
+    private void paintThumbWithDirection(Graphics2D g, Dimensions2D dim) {
+        Polygon p = new Polygon();
+
+        if (slider.getOrientation() == JSlider.HORIZONTAL) {
+            paintThumbHorizontal(g, dim, p);
+        } else {
+            if (slider.getComponentOrientation().isLeftToRight()) {
+                paintThumbVerticalLeftToRight(g, dim, p);
+            } else {
+                paintThumbVerticalRightToLeft(g, dim, p);
+            }
+        }
+    }
+
     @Override
-    public void paintThumb(Graphics gr)  {        
+    public void paintThumb(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
-        Rectangle knobBounds = thumbRect;
-        int w = knobBounds.width;
-        int h = knobBounds.height;      
+        Dimensions2D dim = new Dimensions2D(thumbRect.width, thumbRect.height);
 
-        g.translate(knobBounds.x, knobBounds.y);
+        g.translate(thumbRect.x, thumbRect.y);
 
-                        float[] stops;
-                        Color[] stopColors;
-        if ( slider.isEnabled() ) {
+        float[] stops = enabledStops;
+        Color[] stopColors = enabledStopColors;
+
+        // Set stop colors
+        if (slider.isEnabled()) {
             g.setColor(slider.getBackground());
             if (slider.getModel().getValueIsAdjusting()) {
-                         stops = selectedStops;
-                         stopColors = selectedStopColors;
-                         } else {
-                         stops = enabledStops;
-                         stopColors = enabledStopColors;
-                         }
-        }
-        else {
+                stops = selectedStops;
+                stopColors = selectedStopColors;
+            }
+        } else {
             g.setColor(slider.getBackground().darker());
-                         stops = enabledStops;
-                         stopColors = enabledStopColors;
         }
 
-	Boolean paintThumbArrowShape =
-	    (Boolean)slider.getClientProperty("Slider.paintThumbArrowShape");
-
-	if ((!slider.getPaintTicks() && paintThumbArrowShape == null) ||
-	    paintThumbArrowShape == Boolean.FALSE) {
-
-	    // "plain" version
-            
-                        LinearGradientPaint lgp = new LinearGradientPaint(
-                                new Point2D.Float(2, 2), new Point2D.Float(2, 2+h-4),
-                                stops, stopColors,
-                                MultipleGradientPaint.REPEAT,
-                                MultipleGradientPaint.LINEAR_RGB);
-                        g.setPaint(lgp);
-            g.fillOval(2,2,w - 4,h - 4);
-            g.setColor(new Color(0x444444));
-            g.drawOval(1,1,w - 3,h - 3);
-        }
-        else if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
-            int cw = w / 2;
-            g.fillRect(1, 1, w-3, h-1-cw);
-            Polygon p = new Polygon();
-            p.addPoint(1, h-cw);
-            p.addPoint(cw-1, h-1);
-            p.addPoint(w-2, h-1-cw);
-            g.fillPolygon(p);       
-
-            g.setColor(getHighlightColor());
-            g.drawLine(0, 0, w-2, 0);
-            g.drawLine(0, 1, 0, h-1-cw);
-            g.drawLine(0, h-cw, cw-1, h-1); 
-
-            g.setColor(Color.black);
-            g.drawLine(w-1, 0, w-1, h-2-cw);    
-            g.drawLine(w-1, h-1-cw, w-1-cw, h-1);       
-
-            g.setColor(getShadowColor());
-            g.drawLine(w-2, 1, w-2, h-2-cw);    
-            g.drawLine(w-2, h-1-cw, w-1-cw, h-2);       
-        }
-        else {  // vertical
-            int cw = h / 2;
-	    if(slider.getComponentOrientation().isLeftToRight()) {
-		  g.fillRect(1, 1, w-1-cw, h-3);
-	          Polygon p = new Polygon();
-                  p.addPoint(w-cw-1, 0);
-                  p.addPoint(w-1, cw);
-                  p.addPoint(w-1-cw, h-2);
-                  g.fillPolygon(p);
-
-                  g.setColor(getHighlightColor());
-	          g.drawLine(0, 0, 0, h - 2);                  // left
-	          g.drawLine(1, 0, w-1-cw, 0);                 // top
-	          g.drawLine(w-cw-1, 0, w-1, cw);              // top slant
-
-                  g.setColor(Color.black);
-	          g.drawLine(0, h-1, w-2-cw, h-1);             // bottom
-	          g.drawLine(w-1-cw, h-1, w-1, h-1-cw);        // bottom slant
-
-                  g.setColor(getShadowColor());
-                  g.drawLine(1, h-2, w-2-cw,  h-2 );         // bottom
-                  g.drawLine(w-1-cw, h-2, w-2, h-cw-1 );     // bottom slant
-	    }
-	    else {
-		  g.fillRect(5, 1, w-1-cw, h-3);
-	          Polygon p = new Polygon();
-                  p.addPoint(cw, 0);
-                  p.addPoint(0, cw);
-                  p.addPoint(cw, h-2);
-                  g.fillPolygon(p);
-
-                  g.setColor(getHighlightColor());
-                  g.drawLine(cw-1, 0, w-2, 0);             // top
-                  g.drawLine(0, cw, cw, 0);                // top slant
-
-                  g.setColor(Color.black);
-                  g.drawLine(0, h-1-cw, cw, h-1 );         // bottom slant
-                  g.drawLine(cw, h-1, w-1, h-1);           // bottom
-
-                  g.setColor(getShadowColor());
-                  g.drawLine(cw, h-2, w-2,  h-2 );         // bottom
-                  g.drawLine(w-1, 1, w-1,  h-2 );          // right
-	    }
+        // Paint thumb
+        if (!slider.getPaintTicks() || !(Boolean) slider.getClientProperty("Slider.paintThumbArrowShape")) {
+            paintPlainThumbCircle(g, stops, stopColors, dim);
+        } else {
+            paintThumbWithDirection(g, dim);
         }
 
-        g.translate(-knobBounds.x, -knobBounds.y);
+        // Move to correct coord offset
+        g.translate(-thumbRect.x, -thumbRect.y);
     }
+
     @Override
     protected Dimension getThumbSize() {
         Dimension size = new Dimension();
 
-        if ( slider.getOrientation() == JSlider.VERTICAL ) {
-	    size.width = 15;
-	    size.height = 15;
-	}
-	else {
-	    size.width = 15;
-	    size.height = 15;
-	}
+        if (slider.getOrientation() == JSlider.VERTICAL) {
+            size.width = 15;
+            size.height = 15;
+        } else {
+            size.width = 15;
+            size.height = 15;
+        }
 
-	return size;
+        return size;
     }
-
 
 }
