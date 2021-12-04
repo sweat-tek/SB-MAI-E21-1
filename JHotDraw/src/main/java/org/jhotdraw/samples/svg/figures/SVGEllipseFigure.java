@@ -192,11 +192,13 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
     }
 
     public void restoreTransformTo(Object geometry) {
-        Object[] restoreData = (Object[]) geometry;
-        ellipse = (Ellipse2D.Double) ((Ellipse2D.Double) restoreData[0]).clone();
-        TRANSFORM.basicSetClone(this, (AffineTransform) restoreData[1]);
-        FILL_GRADIENT.basicSetClone(this, (Gradient) restoreData[2]);
-        STROKE_GRADIENT.basicSetClone(this, (Gradient) restoreData[3]);
+        RestoreTransformData restoreData = (RestoreTransformData) geometry;
+
+        ellipse = (Ellipse2D.Double) restoreData.getShape();
+        TRANSFORM.basicSetClone(this, restoreData.getTransform());
+        FILL_GRADIENT.basicSetClone(this, restoreData.getFill());
+        STROKE_GRADIENT.basicSetClone(this, restoreData.getStroke());
+
         invalidate();
     }
 
