@@ -92,19 +92,26 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
         return (Rectangle2D.Double) ellipse.getBounds2D();
     }
 
+    public double getWidthExpansion(Figure f) {
+        double width;
+
+        if (TRANSFORM.get(this) == null) {
+            width = SVGAttributeKeys.getPerpendicularHitGrowth(this) * 2d + 1;
+        } else {
+            width = AttributeKeys.getStrokeTotalWidth(this) / 2d;
+            width *= Math.max(TRANSFORM.get(this).getScaleX(), TRANSFORM.get(this).getScaleY()) + 1;
+        }
+
+        return width;
+    }
+
     @Override
     public Rectangle2D.Double getDrawingArea() {
-        Rectangle2D rx = getTransformedShape().getBounds2D();
-        Rectangle2D.Double r = (rx instanceof Rectangle2D.Double) ? (Rectangle2D.Double) rx : new Rectangle2D.Double(rx.getX(), rx.getY(), rx.getWidth(), rx.getHeight());
-        if (TRANSFORM.get(this) == null) {
-            double g = SVGAttributeKeys.getPerpendicularHitGrowth(this) * 2d + 1;
-            Geom.grow(r, g, g);
-        } else {
-            double strokeTotalWidth = AttributeKeys.getStrokeTotalWidth(this);
-            double width = strokeTotalWidth / 2d;
-            width *= Math.max(TRANSFORM.get(this).getScaleX(), TRANSFORM.get(this).getScaleY()) + 1;
-            Geom.grow(r, width, width);
-        }
+        Rectangle2D.Double r = (Rectangle2D.Double) getTransformedShape().getBounds2D();
+
+        double width = getWidthExpansion(this);
+        Geom.grow(r, width, width);
+
         return r;
     }
 
