@@ -33,7 +33,7 @@ public abstract class BorderPaint {
     g.fillRect(pos.getX() + 1, pos.getY() + 1, width - 2, height - 2);
   }
 
-  private String getSegmentPosition(Component c) {
+  public String getSegmentPosition(Component c) {
     String segmentPosition = null;
     if (c instanceof JComponent) {
       segmentPosition = (String) ((JComponent) c).getClientProperty("Palette.Component.segmentPosition");
