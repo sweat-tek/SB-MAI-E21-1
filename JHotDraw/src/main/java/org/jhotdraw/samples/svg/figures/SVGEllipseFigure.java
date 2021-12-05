@@ -92,7 +92,7 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
         return (Rectangle2D.Double) ellipse.getBounds2D();
     }
 
-    public double getWidthExpansion(Figure f) {
+    public double getWidthExpansion() {
         double width;
 
         if (TRANSFORM.get(this) == null) {
@@ -109,7 +109,7 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
     public Rectangle2D.Double getDrawingArea() {
         Rectangle2D.Double r = (Rectangle2D.Double) getTransformedShape().getBounds2D();
 
-        double width = getWidthExpansion(this);
+        double width = getWidthExpansion();
         Geom.grow(r, width, width);
 
         return r;
@@ -123,25 +123,31 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
     }
 
     private Shape getTransformedShape() {
-        if (cachedTransformedShape == null) {
-            if (TRANSFORM.get(this) == null) {
-                cachedTransformedShape = ellipse;
-            } else {
-                cachedTransformedShape = TRANSFORM.get(this).createTransformedShape(ellipse);
-            }
+        if (cachedTransformedShape != null) {
+            return cachedTransformedShape;
         }
+
+        if (TRANSFORM.get(this) == null) {
+            cachedTransformedShape = ellipse;
+        } else {
+            cachedTransformedShape = TRANSFORM.get(this).createTransformedShape(ellipse);
+        }
+
         return cachedTransformedShape;
     }
     private Shape getHitShape() {
-        if (cachedHitShape == null) {
-            if (FILL_COLOR.get(this) != null || FILL_GRADIENT.get(this) != null) {
-                cachedHitShape = new GrowStroke(
-                        (float) SVGAttributeKeys.getStrokeTotalWidth(this) / 2f,
-                        (float) SVGAttributeKeys.getStrokeTotalMiterLimit(this)).createStrokedShape(getTransformedShape());
-            } else {
-                cachedHitShape = SVGAttributeKeys.getHitStroke(this).createStrokedShape(getTransformedShape());
-            }
+        if (cachedHitShape != null) {
+            return cachedHitShape;
         }
+
+        if (FILL_COLOR.get(this) != null || FILL_GRADIENT.get(this) != null) {
+            cachedHitShape = new GrowStroke(
+                    (float) SVGAttributeKeys.getStrokeTotalWidth(this) / 2f,
+                    (float) SVGAttributeKeys.getStrokeTotalMiterLimit(this)).createStrokedShape(getTransformedShape());
+        } else {
+            cachedHitShape = SVGAttributeKeys.getHitStroke(this).createStrokedShape(getTransformedShape());
+        }
+
         return cachedHitShape;
     }
 
@@ -160,35 +166,7 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      * @param tx the transformation.
      */
     public void transform(AffineTransform tx) {
-        if (TRANSFORM.get(this) != null ||
-                (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
-            if (TRANSFORM.get(this) == null) {
-                TRANSFORM.basicSetClone(this, tx);
-            } else {
-                AffineTransform t = TRANSFORM.getClone(this);
-                t.preConcatenate(tx);
-                TRANSFORM.basicSet(this, t);
-            }
-        } else {
-            Point2D.Double anchor = getStartPoint();
-            Point2D.Double lead = getEndPoint();
-            setBounds(
-                    (Point2D.Double) tx.transform(anchor, anchor),
-                    (Point2D.Double) tx.transform(lead, lead));
-            if (FILL_GRADIENT.get(this) != null &&
-                    !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null &&
-                    !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
-        }
-        invalidate();
+        this.transformAttributedFigure(tx);
     }
 
     public void restoreTransformTo(Object geometry) {
