@@ -9,7 +9,7 @@ import org.jhotdraw.samples.svg.figures.SVGEllipseFigure;
 import java.awt.geom.Point2D;
 import java.util.Map;
 
-public class WhenGivenAttrributes extends Stage<WhenGivenAttrributes> {
+public class WhenGivenAttributes extends Stage<WhenGivenAttributes> {
     @ExpectedScenarioState
     protected SVGEllipseFigure figure;
 
@@ -22,8 +22,9 @@ public class WhenGivenAttrributes extends Stage<WhenGivenAttrributes> {
     @ProvidedScenarioState
     double lead = 50;
 
-    public WhenGivenAttrributes given_attributes() {
+    public WhenGivenAttributes given_attributes() {
         figure.setBounds(new Point2D.Double(anchor, anchor), new Point2D.Double(lead, lead));
         return self();
     }
 }
+
