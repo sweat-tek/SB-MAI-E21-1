@@ -201,6 +201,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     }
     /**
      * Gets the undo action for use as an Undo menu item.
+     * @return 
      */
     public Action getUndoAction() {
         return undoAction;
@@ -208,6 +209,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     
     /**
      * Gets the redo action for use as a Redo menu item.
+     * @return 
      */
     public Action getRedoAction() {
         return redoAction;
@@ -249,6 +251,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo is in progress.
      */
+    @Override
     public void undo()
     throws CannotUndoException {
         undoOrRedoInProgress = true;
@@ -265,6 +268,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while redo is in progress.
      */
+    @Override
     public void redo()
     throws CannotUndoException {
         undoOrRedoInProgress = true;
@@ -281,6 +285,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo or redo is in progress.
      */
+    @Override
     public void undoOrRedo()
     throws CannotUndoException, CannotRedoException {
         undoOrRedoInProgress = true;

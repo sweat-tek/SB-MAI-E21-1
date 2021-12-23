@@ -15,35 +15,47 @@
 package org.jhotdraw.draw.action;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import org.jhotdraw.util.*;
-import javax.swing.*;
 import java.util.*;
+import java.util.logging.Logger;
+import static java.util.logging.Logger.getLogger;
 import javax.swing.undo.*;
 import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.draw.*;
+import static org.jhotdraw.draw.action.BringToFrontAction.bringToFront;
+import static org.jhotdraw.draw.action.SendToBackAction.sendToBack;
 
-/**
- * ToFrontAction.
- *
- * @author  Werner Randelshofer
- * @version 2.0 2008-05-30 Renamed from MoveToFrontAction to BringToFrontAction
- * for consistency with the API of Drawing. 
- * <br>1.0 24. November 2003  Created.
- */
+
 public class BringToFrontAction extends AbstractSelectedAction {
     
-       public static String ID = "edit.bringToFront";
+
+    public static String ID = "edit.bringToFront";
+    private static final Logger LOG = getLogger(BringToFrontAction.class.getName());
+    /**
+     *
+     * @param view
+     * @param figures
+     */
+    public static void bringToFront(DrawingView view, Collection<Figure> figures) {
+        Drawing drawing = view.getDrawing();
+        drawing.sort(figures).forEach(drawing::bringToFront);
+    }
        
-    /** Creates a new instance. */
+    /** Creates a new instance.
+     * @param editor */
     public BringToFrontAction(DrawingEditor editor) {
         super(editor);
         labels.configureAction(this, ID);
     }
 
+    /**
+     *
+     * @param e
+     */
     @FeatureEntryPoint(JHotDrawFeatures.ARRANGE)
+       @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         final DrawingView view = getView();
-        final LinkedList<Figure> figures = new LinkedList<Figure>(view.getSelectedFigures());
+        final LinkedList<Figure> figures = new LinkedList<>(view.getSelectedFigures());
         bringToFront(view, figures);
         fireUndoableEditHappened(new AbstractUndoableEdit() {
             @Override
@@ -53,24 +65,26 @@ public class BringToFrontAction extends AbstractSelectedAction {
             @Override
             public void redo() throws CannotRedoException {
                 super.redo();
-                BringToFrontAction.bringToFront(view, figures);
+                bringToFront(view, figures);
             }
             @Override
             public void undo() throws CannotUndoException {
                 super.undo();
-                SendToBackAction.sendToBack(view, figures);
+                sendToBack(view, figures);
             }
         }
         
         );
     }
-    public static void bringToFront(DrawingView view, Collection<Figure> figures) {
-        Drawing drawing = view.getDrawing();
-        Iterator i = drawing.sort(figures).iterator();
-        while (i.hasNext()) {
-            Figure figure = (Figure) i.next();
-            drawing.bringToFront(figure);
-        }
+
+    /**
+     *
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone(); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -15,34 +15,36 @@
 package org.jhotdraw.draw.action;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import org.jhotdraw.util.*;
-import javax.swing.*;
 import java.util.*;
+import java.util.logging.Logger;
+import static java.util.logging.Logger.getLogger;
 import javax.swing.undo.*;
 import org.jhotdraw.app.JHotDrawFeatures;
 import org.jhotdraw.draw.*;
+import static org.jhotdraw.draw.action.BringToFrontAction.bringToFront;
+import static org.jhotdraw.draw.action.SendToBackAction.sendToBack;
 
-/**
- * SendToBackAction.
- *
- * @author  Werner Randelshofer
- * @version 2.0 2008-05-30 Renamed from MoveToBackAction to SendToBackAction
- * for consistency with the API of Drawing.
- * <br>1.0 24. November 2003  Created.
- */
+
 public class SendToBackAction extends AbstractSelectedAction {
     
-       public static String ID = "edit.sendToBack";
-    /** Creates a new instance. */
+
+    public static String ID = "edit.sendToBack";
+    /** Creates a new instance.
+     * @param editor */
     public SendToBackAction(DrawingEditor editor) {
         super(editor);
         labels.configureAction(this, ID);
     }
 
+    /**
+     *
+     * @param e
+     */
     @FeatureEntryPoint(JHotDrawFeatures.ARRANGE)
+       @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         final DrawingView view = getView();
-        final LinkedList<Figure> figures = new LinkedList<Figure>(view.getSelectedFigures());
+        final LinkedList<Figure> figures = new LinkedList<>(view.getSelectedFigures());
         sendToBack(view, figures);
         fireUndoableEditHappened(new AbstractUndoableEdit() {
             @Override
@@ -52,16 +54,22 @@ public class SendToBackAction extends AbstractSelectedAction {
             @Override
             public void redo() throws CannotRedoException {
                 super.redo();
-                SendToBackAction.sendToBack(view, figures);
+                sendToBack(view, figures);
             }
             @Override
             public void undo() throws CannotUndoException {
                 super.undo();
-                BringToFrontAction.bringToFront(view, figures);
+                bringToFront(view, figures);
             }
         }
         );
     }
+
+    /**
+     *
+     * @param view
+     * @param figures
+     */
     public static void sendToBack(DrawingView view, Collection figures) {
         Iterator i = figures.iterator();
         Drawing drawing = view.getDrawing();
@@ -69,5 +77,11 @@ public class SendToBackAction extends AbstractSelectedAction {
             Figure figure = (Figure) i.next();
             drawing.sendToBack(figure);
         }
+    }
+    private static final Logger LOG = getLogger(SendToBackAction.class.getName());
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone(); //To change body of generated methods, choose Tools | Templates.
     }
 }

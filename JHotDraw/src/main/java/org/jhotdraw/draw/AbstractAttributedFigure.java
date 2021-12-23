@@ -56,7 +56,7 @@ public abstract class AbstractAttributedFigure extends AbstractFigure {
     
     public void setAttributeEnabled(AttributeKey key, boolean b) {
         if (forbiddenAttributes == null) {
-            forbiddenAttributes = new HashSet<AttributeKey>();
+            forbiddenAttributes = new HashSet<>();
         }
         if (b) {
             forbiddenAttributes.remove(key);
@@ -70,26 +70,32 @@ public abstract class AbstractAttributedFigure extends AbstractFigure {
     
     @SuppressWarnings("unchecked")
     public void setAttributes(Map<AttributeKey, Object> map) {
-        for (Map.Entry<AttributeKey, Object> entry : map.entrySet()) {
+        map.entrySet().forEach(entry -> {
             setAttribute(entry.getKey(), entry.getValue());
-        }
+        });
     }
+    @Override
     public Map<AttributeKey, Object> getAttributes() {
-        return new HashMap<AttributeKey,Object>(attributes);
+        return new HashMap<>(attributes);
     }
+    @Override
     public Object getAttributesRestoreData() {
         return getAttributes();
     }
     @SuppressWarnings("unchecked")
+    @Override
     public void restoreAttributesTo(Object restoreData) {
         attributes.clear();
         setAttributes((HashMap<AttributeKey,Object>) restoreData);
     }
     /**
-     * Sets an attribute of the figure.
-     * AttributeKey name and semantics are defined by the class implementing
-     * the figure interface.
+     * Sets an attribute of the figure.AttributeKey name and semantics are defined by the class implementing
+ the figure interface.
+     * @param <T>
+     * @param key
+     * @param newValue
      */
+    @Override
     public <T> void setAttribute(AttributeKey<T> key, T newValue) {
         if (forbiddenAttributes == null
                 || ! forbiddenAttributes.contains(key)) {
@@ -99,12 +105,16 @@ public abstract class AbstractAttributedFigure extends AbstractFigure {
     }
     /**
      * Gets an attribute from the figure.
+     * @param <T>
+     * @param key
      */
+    @Override
     public <T> T getAttribute(AttributeKey<T> key) {
         return hasAttribute(key) ? key.get(attributes) : key.getDefaultValue();
     }
     
     
+    @Override
     public void draw(Graphics2D g) {
         if (AttributeKeys.FILL_COLOR.get(this) != null) {
             g.setColor(AttributeKeys.FILL_COLOR.get(this));
@@ -140,6 +150,7 @@ public abstract class AbstractAttributedFigure extends AbstractFigure {
     }
     
     
+    @Override
     public Rectangle2D.Double getDrawingArea() {
         double strokeTotalWidth = AttributeKeys.getStrokeTotalWidth(this);
         double width = strokeTotalWidth / 2d;
@@ -169,19 +180,20 @@ public abstract class AbstractAttributedFigure extends AbstractFigure {
      */
     /**
      * This method is called by method draw() to draw the text of the figure
-     * . AbstractAttributedFigure configures the Graphics2D object with
-     * the TEXT_COLOR attribute before calling this method.
-     * If the TEXT_COLOR attribute is null, this method is not called.
+     * .AbstractAttributedFigure configures the Graphics2D object with
+ the TEXT_COLOR attribute before calling this method. If the TEXT_COLOR attribute is null, this method is not called.
+     * @param g
      */
     protected abstract void drawStroke(java.awt.Graphics2D g);
     protected void drawText(java.awt.Graphics2D g) {
     }
     
+    @Override
     public AbstractAttributedFigure clone() {
         AbstractAttributedFigure that = (AbstractAttributedFigure) super.clone();
-        that.attributes = new HashMap<AttributeKey,Object>(this.attributes);
+        that.attributes = new HashMap<>(this.attributes);
         if (this.forbiddenAttributes != null) {
-            that.forbiddenAttributes = new HashSet<AttributeKey>(this.forbiddenAttributes);
+            that.forbiddenAttributes = new HashSet<>(this.forbiddenAttributes);
         }
         return that;
     }
@@ -241,15 +253,17 @@ public abstract class AbstractAttributedFigure extends AbstractFigure {
     
     /**
      * Applies all attributes of this figure to that figure.
+     * @param that
      */
     @SuppressWarnings("unchecked")
     protected void applyAttributesTo(Figure that) {
-        for (Map.Entry<AttributeKey, Object> entry : attributes.entrySet()) {
+        attributes.entrySet().forEach(entry -> {
             entry.getKey().basicSet(that, entry.getValue());
-        }
+        });
     }
     
     
+    @Override
     public void write(DOMOutput out) throws IOException {
         Rectangle2D.Double r = getBounds();
         out.addAttribute("x", r.x);
@@ -259,6 +273,7 @@ public abstract class AbstractAttributedFigure extends AbstractFigure {
         writeAttributes(out);
     }
     
+    @Override
     public void read(DOMInput in) throws IOException {
         double x = in.getAttribute("x", 0d);
         double y = in.getAttribute("y", 0d);

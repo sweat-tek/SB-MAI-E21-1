@@ -130,7 +130,7 @@ public abstract class AbstractDrawing extends AbstractAttributedCompositeFigure 
     }
 
     public void setInputFormats(java.util.List<InputFormat> formats) {
-        this.inputFormats = new LinkedList<InputFormat>(formats);
+        this.inputFormats = new LinkedList<>(formats);
     }
 
     public java.util.List<InputFormat> getInputFormats() {
@@ -148,23 +148,4 @@ public abstract class AbstractDrawing extends AbstractAttributedCompositeFigure 
     public Drawing getDrawing() {
         return this;
     }
-
-    /*@Override
-    public Rectangle2D.Double getDrawingArea() {
-        Rectangle2D.Double drawingArea;
-
-        Dimension2DDouble canvasSize = getCanvasSize();
-        if (canvasSize != null) {
-            drawingArea = new Rectangle2D.Double(
-                    0d, 0d,
-                    canvasSize.width, canvasSize.height);
-        } else {
-            drawingArea = super.getDrawingArea();
-            drawingArea.add(0d, 0d);
-            /*drawingArea = new Rectangle2D.Double(
-                    0d, 0d,
-                    canvasSize.width, canvasSize.height);* /
-        }
-        return drawingArea;
-    }*/
 }
