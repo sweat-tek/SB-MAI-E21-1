@@ -477,10 +477,10 @@ public class DefaultDrawingView
         if (DEBUG) {
             System.out.println("DefaultDrawingView" + ".addToSelection(" + figure + ")");
         }
-        Set<Figure> oldSelection = new HashSet<Figure>(selectedFigures);
+        Set<Figure> oldSelection = new HashSet<>(selectedFigures);
         if (selectedFigures.add(figure)) {
             figure.addFigureListener(handleInvalidator);
-            Set<Figure> newSelection = new HashSet<Figure>(selectedFigures);
+            Set<Figure> newSelection = new HashSet<>(selectedFigures);
             Rectangle invalidatedArea = null;
             if (handlesAreValid && getEditor() != null) {
                 for (Handle h : figure.createHandles(detailLevel)) {
@@ -540,9 +540,9 @@ public class DefaultDrawingView
      * Removes a figure from the selection.
      */
     public void removeFromSelection(Figure figure) {
-        Set<Figure> oldSelection = new HashSet<Figure>(selectedFigures);
+        Set<Figure> oldSelection = new HashSet<>(selectedFigures);
         if (selectedFigures.remove(figure)) {
-            Set<Figure> newSelection = new HashSet<Figure>(selectedFigures);
+            Set<Figure> newSelection = new HashSet<>(selectedFigures);
             invalidateHandles();
             figure.removeFigureListener(handleInvalidator);
             fireSelectionChanged(oldSelection, newSelection);
@@ -551,8 +551,8 @@ public class DefaultDrawingView
     }
 
     /**
-     * If a figure isn't selected it is added to the selection.
-     * Otherwise it is removed from the selection.
+     * If a figure isn't selected it is added to the selection.Otherwise it is removed from the selection.
+     * @param figure
      */
     public void toggleSelection(Figure figure) {
         if (selectedFigures.contains(figure)) {

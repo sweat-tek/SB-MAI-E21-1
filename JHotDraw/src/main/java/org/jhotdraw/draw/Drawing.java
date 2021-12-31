@@ -234,14 +234,18 @@ public interface Drawing extends CompositeFigure, Serializable, DOMStorable {
     
     /**
      * Returns a list of the figures in Z-Order from front to back.
+     * @return 
      */
     List<Figure> getFiguresFrontToBack();
     /**
      * Finds a figure but descends into a figure's
-     * children. Use this method to implement <i>click-through</i>
-     * hit detection, that is, you want to detect the inner most
-     * figure containing the given point.
+     * children.Use this method to implement <i>click-through</i>
+ hit detection, that is, you want to detect the inner most
+ figure containing the given point.
+     * @param p
+     * @return 
      */
+    @Override
     Figure findFigureInside(Point2D.Double p);
     
     /**
@@ -261,6 +265,7 @@ public interface Drawing extends CompositeFigure, Serializable, DOMStorable {
     /**
      * Returns a copy of the provided collection which is sorted
      * in z order from back to front.
+     * @param figures
      */
     List<Figure> sort(Collection<? extends Figure> figures);
     
@@ -280,11 +285,11 @@ public interface Drawing extends CompositeFigure, Serializable, DOMStorable {
     void fireUndoableEditHappened(UndoableEdit edit);
     
     /**
-     * Returns the font render context used to do text leyout and text drawing.
+     * Returns the font render context used to do text layout and text drawing.
      */
     FontRenderContext getFontRenderContext();
     /**
-     * Sets the font render context used to do text leyout and text drawing.
+     * Sets the font render context used to do text layout and text drawing.
      */
     void setFontRenderContext(FontRenderContext frc);
     
@@ -312,6 +317,7 @@ public interface Drawing extends CompositeFigure, Serializable, DOMStorable {
     void setInputFormats(List<InputFormat> formats);
     /**
      * Gets input formats for the Drawing in order of preferred formats.
+     * @return 
      */
     List<InputFormat> getInputFormats();
     /**
@@ -319,10 +325,12 @@ public interface Drawing extends CompositeFigure, Serializable, DOMStorable {
      * <p>
      * The output formats are used for saving the Drawing into a file and for
      * cutting and copying Figures from the Drawing into the clipboard.
+     * @param formats
      */
     void setOutputFormats(List<OutputFormat> formats);
     /**
      * Gets output formats for the Drawing in order of preferred formats.
+     * @return 
      */
     List<OutputFormat> getOutputFormats();
     

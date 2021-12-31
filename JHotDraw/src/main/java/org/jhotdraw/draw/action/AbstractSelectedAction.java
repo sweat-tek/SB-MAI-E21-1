@@ -46,8 +46,9 @@ public abstract class AbstractSelectedAction
             ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels", Locale.getDefault());
     
     private class EventHandler implements PropertyChangeListener, FigureSelectionListener, Serializable {
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            if (evt.getPropertyName() == DrawingEditor.ACTIVE_VIEW_PROPERTY) {
+            if (evt.getPropertyName().equals(DrawingEditor.ACTIVE_VIEW_PROPERTY)) {
                 if (evt.getOldValue() != null) {
                     DrawingView view = ((DrawingView) evt.getOldValue());
                     view.removeFigureSelectionListener(this);
@@ -63,17 +64,19 @@ public abstract class AbstractSelectedAction
                 updateEnabledState();
             }
         }
+        @Override
         public void selectionChanged(FigureSelectionEvent evt) {
             updateEnabledState();
             
         }
     };
     
-    private EventHandler eventHandler = new EventHandler();
+    private final EventHandler eventHandler = new EventHandler();
     
     
     /** Creates an action which acts on the selected figures on the current view
      * of the specified editor.
+     * @param editor
      */
     public AbstractSelectedAction(DrawingEditor editor) {
         setEditor(editor);

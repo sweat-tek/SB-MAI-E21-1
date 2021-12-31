@@ -160,7 +160,8 @@ public class SVGAttributeKeys extends AttributeKeys {
     }
     
     
-    /** Sets SVG default values. */
+    /** Sets SVG default values.
+     * @param f */
     public static void setDefaults(Figure f) {
         // Fill properties
         // http://www.w3.org/TR/SVGMobile12/painting.html#FillProperties
