@@ -5,11 +5,9 @@
  */
 package org.jhotdraw.draw;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.jhotdraw.geom.Dimension2DDouble;
 import org.junit.After;
@@ -162,18 +160,6 @@ public class QuadTreeDrawingTest {
         QuadTreeDrawing instance = new QuadTreeDrawing();
         Dimension2DDouble expResult = null;
         Dimension2DDouble result = instance.getCanvasSize();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of clone method, of class QuadTreeDrawing.
-     */
-    @Test
-    public void testClone() {
-        System.out.println("clone");
-        QuadTreeDrawing instance = new QuadTreeDrawing();
-        QuadTreeDrawing expResult = instance;
-        QuadTreeDrawing result = instance.clone();
         assertEquals(expResult, result);
     }
 }

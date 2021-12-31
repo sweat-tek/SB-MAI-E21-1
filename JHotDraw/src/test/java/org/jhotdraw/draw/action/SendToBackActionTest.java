@@ -5,7 +5,6 @@
  */
 package org.jhotdraw.draw.action;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.jhotdraw.draw.DrawingView;
@@ -14,7 +13,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
